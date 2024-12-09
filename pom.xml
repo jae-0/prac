@@ -110,7 +110,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>MainClass</mainClass>
+                            <mainClass>com.yourpackage.MainClass</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
