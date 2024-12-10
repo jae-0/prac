@@ -27,12 +27,11 @@ class FingerprintHandler : RequestHandler<Map<String, Any>, Map<String, Any>> {
 
     override fun handleRequest(input: Map<String, Any>, context: Context): Map<String, Any> {
         try {
-            val body = input["body"] as? String 
-                ?: throw IllegalArgumentException("Invalid request body")
-            
+            // body에서 실제 데이터 추출
+            val body = input["body"] as String
+            // body를 FingerprintRequest로 변환
             val request = objectMapper.readValue<FingerprintRequest>(body)
             val verificationResult = verifyFingerprint(request)
-            
             return createResponse(200, verificationResult)
         } catch (e: Exception) {
             context.logger.log("Error: ${e.message}")
