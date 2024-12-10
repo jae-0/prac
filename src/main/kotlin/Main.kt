@@ -83,19 +83,23 @@ class FingerprintHandler : RequestHandler<Map<String, Any>, Map<String, Any>> {
         }
     
         // 저장된 지문의 개수가 3개가 아닐 경우 에러
-        if (scores.size != REQUIRED_MATCHES) {
+        if (scores.size != 3) {
             throw IllegalStateException("Invalid number of stored fingerprints")
         }
     
-        // 모든 점수가 임계값을 넘는지 확인
-        return if (scores.all { it >= SIMILARITY_THRESHOLD }) {
+        // 평균 점수 계산
+        val averageScore = scores.average()
+        
+        // 평균 점수가 임계값을 넘는지 확인
+        return if (averageScore >= SIMILARITY_THRESHOLD) {
             mapOf(
                 "verified" to true,
                 "scores" to scores,
-                "message" to "All fingerprints verified successfully"
+                "averageScore" to averageScore,
+                "message" to "Fingerprint verification successful with average score: $averageScore"
             )
         } else {
-            throw IllegalStateException("Fingerprint verification failed")
+            throw IllegalStateException("Fingerprint verification failed: Average score ($averageScore) below threshold")
         }
     }
 
